@@ -1,4 +1,12 @@
 <html>
+<head>
+<script>
+window.location.href="candidate";
+</script>
+</head>
+</html>
+<%-- 
+<html>
     <head>
         <title>Welcome to Grails</title>
         <meta name="layout" content="main" />
@@ -98,3 +106,4 @@
         </div>
     </body>
 </html>
+--%>

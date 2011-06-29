@@ -2,12 +2,12 @@ package be.idelis.codeshare
 
 class CandidateController {
 
-	def isDebug = true;
+	def isDebug = false;
 
     def index = {
 	}
 
-	def runSession = {
+	def register = {
 		if (params.code == null || params.code.isEmpty())
 		{
 			chain(action:index, model:[errorMessage:"Missing code!"]); return
@@ -29,6 +29,16 @@ class CandidateController {
 			chain(action:index, model:[code:params.code, errorMessage:"Invalid code!"]); return
 		}
 
+		redirect(action:runSession, params:[id:code])
+    }
+	
+	def runSession = {
+		def isession = InterviewSession.findById(params.id);
+		if (isession == null)
+		{
+			redirect(action:index); return
+		}
+
 		if (isession.status == InterviewSession.CLOSED)
 		{
 			redirect(action:sessionClosed); return;
@@ -42,9 +52,9 @@ class CandidateController {
 			otherTextLastUpdateTime:isession.interviewerTextUpdateTime == null ? 0 : isession.interviewerTextUpdateTime.getTime(),
 
 			isDebug: isDebug,
-			urlRefreshOtherText:"/codeshare/candidate/refreshOtherText",
-			urlUpdateMyText:"/codeshare/candidate/updateMyText",
-			urlSessionClosed:"/codeshare/candidate/sessionClosed",
+			urlRefreshOtherText:"../refreshOtherText",
+			urlUpdateMyText:"../updateMyText",
+			urlSessionClosed:"../sessionClosed",
 			myScreenLabel:"Your screen",
 			otherScreenLabel:"Interviewer screen",
 		];

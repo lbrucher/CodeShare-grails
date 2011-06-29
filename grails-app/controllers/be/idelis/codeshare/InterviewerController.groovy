@@ -3,13 +3,18 @@ import grails.converters.*
 
 class InterviewerController {
 
-	def isDebug = true;
+	private static boolean isDebug = false;
 
     def index = {
 		def interviewer = User.findByUsername("laurent");
 		[interviews: InterviewSession.findByInterviewer(interviewer)];
 	}
-	
+
+	def toggleDebug = {
+		isDebug = !isDebug
+		redirect(action:runSession, params:[id:params.id])
+	}	
+
 	def createNew = {
 		def interviewer = User.findByUsername("laurent");
 		def isession = new InterviewSession(id:1,interviewer:laurent,candidateName:"joe").save(failOnError: true)
@@ -30,10 +35,10 @@ class InterviewerController {
 			otherText:isession.candidateText,
 			otherTextLastUpdateTime:isession.candidateTextUpdateTime == null ? 0 : isession.candidateTextUpdateTime.getTime(),
 
-			isDebug: isDebug,
-			urlRefreshOtherText:"/codeshare/interviewer/refreshOtherText",
-			urlUpdateMyText:"/codeshare/interviewer/updateMyText",
-			urlSessionClosed:"/codeshare/interviewer",
+			isDebug:isDebug,
+			urlRefreshOtherText:"../refreshOtherText",
+			urlUpdateMyText:"../updateMyText",
+			urlSessionClosed:"..",
 			myScreenLabel:"Interviewer screen",
 			otherScreenLabel:"Candidate screen",
 		];

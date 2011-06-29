@@ -15,7 +15,7 @@ class BootStrap {
 		
 		if (!InterviewSession.count())
 		{
-			new InterviewSession(id:1,interviewer:laurent,candidateName:"joe",interviewerText:"some initial text...").save(failOnError: true)
+			new InterviewSession(id:1,interviewer:laurent).save(failOnError: true)
 		}
     }
 
